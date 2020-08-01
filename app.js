@@ -32,7 +32,7 @@ app.get("/student/get", (req, res) => {
         } else {
             // get data from remote API
             axios
-                .get("http://localhost:5000/student/get")
+                .get("https://uokse-app.azurewebsites.net/student/get")
                 .then((students) => {
                     // save the API response in redis store
                     client.setex(usersRedisKey, 3600, JSON.stringify(students.data));
