@@ -50,7 +50,7 @@ app.get("/student/get", (req, res) => {
 
 // user details endpoint
 app.get("/", (req, res) =>
-    res.send("Welcome to Node.js + Redis boilerplate API.")
+    res.send("Service 2 works...")
 );
 
 app.listen(PORT, () => {
