@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const multer = require('multer');
 const inMemoryStorage = multer.memoryStorage();
-const uploadStrategy = multer({ storage: inMemoryStorage }).single('image');
+const uploadStrategy = multer({storage: inMemoryStorage}).single('image');
 
 
 const app = express();
@@ -30,7 +30,7 @@ app.get("/student/get", (req, res) => {
     // try to fetch the result from redis
     return client.get(usersRedisKey, (err, students) => {
         if (students) {
-            return res.json({ source: "cache", data: JSON.parse(students) });
+            return res.json({source: "cache", data: JSON.parse(students)});
 
             // if cache not available call API
         } else {
@@ -42,7 +42,7 @@ app.get("/student/get", (req, res) => {
                     client.setex(usersRedisKey, 3600, JSON.stringify(students.data));
 
                     // send JSON response to client
-                    return res.json({ source: "api", data: students.data });
+                    return res.json({source: "api", data: students.data});
                 })
                 .catch((error) => {
                     // send error to the client
@@ -57,28 +57,28 @@ app.get("/", (req, res) =>
     res.send("Service 2 works...")
 );
 
-app.post("/file/upload",uploadStrategy, (req, res) => {
+app.post("/file/upload", uploadStrategy, (req, res) => {
 
     try {
 
         axios
-            .post("https://se-function.azurewebsites.net/api/HttpTrigger",{
-                data : req.file.buffer,
-                imgName : req.file.originalname
+            .post("https://uokse15-16.azurewebsites.net/api/HttpTrigger", {
+                data: req.file.buffer,
+                imgName: req.file.originalname
             })
-            .then((Res) =>{
-                if(Res.status === 200) {
+            .then((Res) => {
+                if (Res.status === 200) {
                     return res.status(200).json({
                         message: 'Image Uploaded!',
-                        statusCode:200
+                        statusCode: 200
                     });
-                }else {
+                } else {
                     return res.status(200).json({
                         message: 'Image Upload failed!',
-                        statusCode:400
+                        statusCode: 400
                     });
                 }
-            }).catch(e=>{
+            }).catch(e => {
             console.log(e);
         });
 
