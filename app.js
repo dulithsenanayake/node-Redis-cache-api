@@ -57,7 +57,7 @@ app.get("/", (req, res) =>
     res.send("Service 2 works...")
 );
 
-app.get("/file/upload",uploadStrategy, (req, res) => {
+app.post("/file/upload",uploadStrategy, (req, res) => {
 
     try {
 
