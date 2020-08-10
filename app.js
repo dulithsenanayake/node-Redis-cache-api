@@ -4,6 +4,10 @@ const redis = require("redis");
 const cors = require('cors');
 const dotenv = require("dotenv");
 dotenv.config();
+const multer = require('multer');
+const inMemoryStorage = multer.memoryStorage();
+const uploadStrategy = multer({ storage: inMemoryStorage }).single('image');
+
 
 const app = express();
 app.use(cors());
@@ -52,6 +56,34 @@ app.get("/student/get", (req, res) => {
 app.get("/", (req, res) =>
     res.send("Service 2 works...")
 );
+
+app.get("/file/upload",uploadStrategy, (req, res) => {
+
+    try {
+
+        axios
+            .post("https://se-function.azurewebsites.net/api/HttpTrigger",{
+                data : req.file.buffer,
+                imgName : req.file.originalname
+            })
+            .then((Res) =>{
+                if(Res.status === 200) {
+                    return res.status(200).json({
+                        message: 'Image Uploaded!'
+                    });
+                }else {
+                    return res.status(200).json({
+                        message: 'Image Upload failed!'
+                    });
+                }
+            }).catch(e=>{
+            console.log(e);
+        });
+
+    } catch (err) {
+    }
+
+});
 
 app.listen(PORT, () => {
     console.log("Server listening on port:", PORT);
