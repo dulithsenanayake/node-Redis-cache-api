@@ -69,11 +69,13 @@ app.get("/file/upload",uploadStrategy, (req, res) => {
             .then((Res) =>{
                 if(Res.status === 200) {
                     return res.status(200).json({
-                        message: 'Image Uploaded!'
+                        message: 'Image Uploaded!',
+                        statusCode:200
                     });
                 }else {
                     return res.status(200).json({
-                        message: 'Image Upload failed!'
+                        message: 'Image Upload failed!',
+                        statusCode:400
                     });
                 }
             }).catch(e=>{
