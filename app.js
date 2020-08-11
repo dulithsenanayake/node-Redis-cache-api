@@ -60,11 +60,10 @@ app.get("/", (req, res) =>
 app.post("/file/upload", uploadStrategy, (req, res) => {
 
     try {
-
         axios
             .post("https://uokse15-16.azurewebsites.net/api/HttpTrigger", {
-                data: req.file.buffer,
-                imgName: req.file.originalname
+                filedata: req.file.buffer,
+                filename: req.file.originalname
             })
             .then((Res) => {
                 if (Res.status === 200) {
@@ -73,16 +72,19 @@ app.post("/file/upload", uploadStrategy, (req, res) => {
                         statusCode: 200
                     });
                 } else {
-                    return res.status(200).json({
-                        message: 'Image Upload failed!',
-                        statusCode: 400
-                    });
+                    throw error;
                 }
-            }).catch(e => {
-            console.log(e);
-        });
+            })
+            .catch(e => {
+                return res.status(200).json({
+                    message: 'Image Upload failed!',
+                    statusCode: 400
+                });
+                console.error(e);
+            });
 
-    } catch (err) {
+    } catch (e) {
+        console.error(e);
     }
 
 });
